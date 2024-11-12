@@ -3,8 +3,8 @@
 #define __utils_hpp__
 
 #include <vector>
-
-
+#include <random> 
+#include <iostream>
 
 class Ising_lattice
 {
@@ -14,16 +14,23 @@ public:
     double J; // Coupling constant
     double E; // Energy
     int M; // magnetisation
+    unsigned int Seed; // Seed for RNG
+
+    std::mt19937 generator; // RNG
+    std::uniform_int_distribution<int> uniform_L; // Uniform distrubution of integers between 0 and L-1
+    std::uniform_real_distribution<double> uniform_01; // niform distrubution of real numbers between 0 and 1
 
     std::vector <std::vector<int>> Lattice; // The lattice
     std::vector <double> Bf; // Possible Boltzmann factors
 
-
     // Contructor
-    Ising_lattice(unsigned int length, double temp, double coup_const);
+    Ising_lattice(unsigned int length, double temp, double coup_const, unsigned int seed);
 
     // Function for implementing periodic boundary conditions
     int pbc(int i, int add);
+
+    // Prints lattice to terminal
+    void print();
 
     // Computes total magnetisation of lattice
     int magnetisation();
@@ -40,11 +47,6 @@ public:
     // Does one MCMC cycle
     void MCMC_cycle();
 };
-
-
-
-
-
 
 
 
