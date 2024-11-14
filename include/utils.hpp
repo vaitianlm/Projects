@@ -26,6 +26,9 @@ public:
     // Contructor
     Ising_lattice(unsigned int length, double temp, double coup_const, unsigned int seed);
 
+    // Function for randomising spins
+    void randomise_spins();
+
     // Function for implementing periodic boundary conditions
     int pbc(int i, int add);
 
