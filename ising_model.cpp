@@ -1,7 +1,7 @@
 // Build: 
-// g++ burn_in.cpp src/utils.cpp -I include -o burn_in.exe; 
+// g++ ising_model.cpp src/utils.cpp -I include -o ising_model.exe
 // Execute:
-// ./burn_in.exe <temperature> <burn in cycles> <initial config [o/u]> <output filename> <MCMC cycles>
+// ./ising_model.exe <temperature> <burn in cycles> <initial config [o/u]> <output filename> <MCMC cycles>
 
 #include <iomanip>
 #include <iostream>
