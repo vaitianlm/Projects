@@ -1,5 +1,8 @@
 #include <cmath>
 #include "utils.hpp"
+#include <iomanip>
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -135,4 +138,62 @@ void Ising_lattice::MCMC_cycle()
 
         MCMC_step(r, i, j);
     }
+}
+
+// Writes samples to file
+void Ising_lattice::write_samples(string initial_config, int cycles, vector<vector<double>>& samples)
+{
+    stringstream s1; 
+    s1<<T; 
+    string T_string = s1.str(); //converting the float value to string 
+
+    stringstream s2; 
+    s2<<L; 
+    string L_string = s2.str(); //converting the float value to string 
+
+    ofstream ofile;
+    string filename = "T" + T_string + "_L" +  L_string + "_N" + to_string(cycles) + "_" + initial_config + "_samples.txt";
+    ofile.open(filename);
+
+    // Parameters for formatting output
+    int width = 12;
+    int prec  = 4;
+
+    // Writing to file
+    for (int i = 0; i <= cycles-1; i++)
+    {
+        // Writing a line with the current x and y values (nicely formatted) to file
+        ofile << std::setw(width) << std::setprecision(prec) << std::scientific << samples[i][0]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << samples[i][1]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << samples[i][2]
+            << std::endl;
+    }  
+    ofile.close();
+}
+
+// Writes calculated system values to file
+void write_values(unsigned int L, int kmax, int cycles, std::vector<std::vector<double>>& values)
+{
+    ofstream ofile;
+    string filename = "L" +  to_string(L) + "_N" + to_string(cycles) + "_" + to_string(kmax+1) + "_values.txt";
+    ofile.open(filename);
+
+    // Parameters for formatting output
+    int width = 12;
+    int prec  = 4;
+    
+    // Writing to file
+    for (int i = 0; i <= kmax; i++)
+    {
+        // Writing a line with the current x and y values (nicely formatted) to file
+        ofile << std::setw(width) << std::setprecision(prec) << std::scientific << values[i][0]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << values[i][1]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << values[i][2]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << values[i][3]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << values[i][4]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << values[i][5]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << values[i][6]
+            << std::endl;
+    }
+    ofile.close();
 }
