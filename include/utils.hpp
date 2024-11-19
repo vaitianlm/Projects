@@ -49,8 +49,12 @@ public:
 
     // Does one MCMC cycle
     void MCMC_cycle();
+
+    // Writes samples to file
+    void write_samples(std::string initial_config, int cycles, std::vector<std::vector<double>>& samples);
 };
 
-
+// Writes calculated system values to file
+void write_values(unsigned int L, int kmax, int cycles, std::vector<std::vector<double>>& values);
 
 #endif  // end of include guard __utils_hpp__
