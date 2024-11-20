@@ -45,10 +45,10 @@ int main(int argc, char* argv[])
 
     double T_min = atof(argv[1]);   // Minimum temperature [J/k]
     double T_max = atof(argv[2]);   // Maximum temperature [J/k]
-    double T_step = atof(argv[3]);   // Maximum temperature [J/k]
+    double T_step = atof(argv[3]);  // Maximum temperature [J/k]
     unsigned int L = atoi(argv[4]); // Length of lattice
     int cycles = atoi(argv[7]);     // Number of MCMC cycles to do
-    int burn_in = atoi(argv[8]); // Specify burn-in time
+    int burn_in = atoi(argv[8]);    // Specify burn-in time
     double J = 1;                   // Value of coupling constant
 
     // Taking seed for RNG from clock
