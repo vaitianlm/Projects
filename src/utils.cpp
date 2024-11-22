@@ -130,7 +130,7 @@ void Ising_lattice::MCMC_step(double r, int i, int j)
 // Does one MCMC cycle
 void Ising_lattice::MCMC_cycle()
 {
-    for (int k=0; k<=L-1; k++)
+    for (int k=0; k<=pow(L, 2)-1; k++)
     {
         double r = uniform_01(generator);
         int i = uniform_L(generator);
@@ -166,6 +166,9 @@ void Ising_lattice::write_samples(string initial_config, int cycles, vector<vect
         ofile << std::setw(width) << std::setprecision(prec) << std::scientific << samples[i][0]
             << std::setw(width) << std::setprecision(prec) << std::scientific << samples[i][1]
             << std::setw(width) << std::setprecision(prec) << std::scientific << samples[i][2]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << samples[i][3]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << samples[i][4]
+            << std::setw(width) << std::setprecision(prec) << std::scientific << samples[i][5]
             << std::endl;
     }  
     ofile.close();
