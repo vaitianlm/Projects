@@ -1,7 +1,7 @@
 // Build: 
 // g++ ising_model.cpp -fopenmp src/utils.cpp -I include -o ising_model.exe -fopenmp
 // Execute:
-// ./ising_model.exe <min temperature> <max temperature> <lattice length> <initial config [o/u]> <store samples [true/false]> <MCMC cycles>
+// ./ising_model.exe <min temperature> <max temperature> <#temp-steps> <lattice length> <initial config [o/u]> <store samples [true/false]> <MCMC cycles> <burn-in cycles>
 
 
 #include <iomanip>
@@ -28,8 +28,7 @@ int main(int argc, char* argv[])
     {
         string executable_name = argv[0];
         cerr << "Error: fifth argument must be either o or u" << endl;
-        cerr << "Usage: " << executable_name << "<min temperature> <max temperature> <#temp steps> <lattice length> <initial config [o/u]> <store samples [true/false]> <MCMC cycles>" << std::endl;
-
+        cerr << "Usage: " << executable_name << "<min temperature> <max temperature> <#temp steps> <lattice length> <initial config [o/u]> <store samples [true/false]> <MCMC cycles> <burn-in cycles>" << std::endl;
         return 1;
     }
     
@@ -38,8 +37,7 @@ int main(int argc, char* argv[])
     {
         std::string executable_name = argv[0];
         std::cerr << "Error: sixth argument must be either true or false" << std::endl;
-        std::cerr << "Usage: " << executable_name << "<min temperature> <max temperature> <#temp steps> <lattice length> <initial config [o/u]> <store samples [true/false]> <MCMC cycles>" << std::endl;
-
+        std::cerr << "Usage: " << executable_name << "<min temperature> <max temperature> <temp-step> <lattice length> <initial config [o/u]> <store samples [true/false]> <MCMC cycles> <burn-in cycles>" << std::endl;
         return 1;
     }
 
@@ -47,10 +45,12 @@ int main(int argc, char* argv[])
     double T_max = atof(argv[2]);   // Maximum temperature [J/k]
     int T_num = atof(argv[3])-1;      // Number of temperature steps
     double T_step = 1;
+   
     if (T_max != T_min)
     {
         T_step = (T_max-T_min)/T_num;   // Temperature stepsize
     }
+  
     unsigned int L = atoi(argv[4]); // Length of lattice
     int cycles = atoi(argv[7]);     // Number of MCMC cycles to do
     int burn_in = atoi(argv[8]);    // Specify burn-in time

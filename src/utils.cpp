@@ -9,7 +9,7 @@ using namespace std;
 // Contructor for Ising_lattice class
 Ising_lattice::Ising_lattice(unsigned int length, double temp, double coup_const, unsigned int seed)
 {
-    // Assinging values
+    // Assigning values
     L = length;
     T = temp;
     J = coup_const;
@@ -63,7 +63,7 @@ int Ising_lattice::pbc(int i, int add)
     return (i + L + add) % L;
 }
 
-/// Prints lattice to terminal
+// Prints lattice to terminal
 void Ising_lattice::print()
 {
     for (int i = 0; i <= L-1; i++) 
@@ -145,11 +145,11 @@ void Ising_lattice::write_samples(string initial_config, int cycles, vector<vect
 {
     stringstream s1; 
     s1<<T; 
-    string T_string = s1.str(); //converting the float value to string 
+    string T_string = s1.str(); // Converting the float value to string 
 
     stringstream s2; 
     s2<<L; 
-    string L_string = s2.str(); //converting the float value to string 
+    string L_string = s2.str(); // Converting the float value to string 
 
     ofstream ofile;
     string filename = "T" + T_string + "_L" +  L_string + "_N" + to_string(cycles) + "_" + initial_config + "_samples.txt";
