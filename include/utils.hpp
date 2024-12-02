@@ -2,7 +2,7 @@
 #ifndef __utils_hpp__  
 #define __utils_hpp__
 
-#include <armadillo>;
+#include <armadillo>
 
 class Double_slit
 {
@@ -27,19 +27,15 @@ public:
     arma::cx_vec b_vec(arma::cx_mat V, arma::cx_double r, arma::cx_double dt);
 
     // Helper function for CN_matA and CN_matB
-    arma::cx_mat tridiag(arma::cx_double r, arma::cx_vec diag);
+    arma::cx_mat tridiag(arma::cx_double r, arma::cx_vec di);
 
     // Constructs matrix A for CN scheme
-    arma::cx_mat CN_matA(arma::cx_double r, arma::cx_vec a);
+    arma::cx_mat CN_matA(int M, arma::cx_double r, arma::cx_vec a);
 
     // Constructs matrix B for CN scheme
-    arma::cx_mat CN_matB(arma::cx_double r, arma::cx_vec b);
-}
+    arma::cx_mat CN_matB(int M, arma::cx_double r, arma::cx_vec b);
+};
 
-// COPY PASTE FRA PROSJEKT 2
-// This function creates a matrix tridiag(a,d,e) of size n*n, 
-// from scalar input a, d, and e. Taken from the code snippets provided in the problem text.
-arma::mat create_tridiagonal(int N, double a, double d, double e);
 
 
 #endif  // end of include guard __utils_hpp__
