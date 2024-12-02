@@ -20,6 +20,15 @@ public:
     // Translates two indices i,j to single indice k  (O)
     int vec_ind(int i, int j);
 
+    // Generates vector containing diagonal elements of matrix A
+    arma::cx_vec a_vec(arma::cx_mat V, arma::cx_double r, arma::cx_double dt);
+
+    // generates vector containing diagonal elements of matrix B
+    arma::cx_vec b_vec(arma::cx_mat V, arma::cx_double r, arma::cx_double dt);
+
+    // Helper function for CN_matA and CN_matB
+    arma::cx_mat tridiag(arma::cx_double r, arma::cx_vec diag);
+
     // Constructs matrix A for CN scheme
     arma::cx_mat CN_matA(arma::cx_double r, arma::cx_vec a);
 
@@ -27,7 +36,10 @@ public:
     arma::cx_mat CN_matB(arma::cx_double r, arma::cx_vec b);
 }
 
-
+// COPY PASTE FRA PROSJEKT 2
+// This function creates a matrix tridiag(a,d,e) of size n*n, 
+// from scalar input a, d, and e. Taken from the code snippets provided in the problem text.
+arma::mat create_tridiagonal(int N, double a, double d, double e);
 
 
 #endif  // end of include guard __utils_hpp__
