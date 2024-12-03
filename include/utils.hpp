@@ -18,7 +18,7 @@ public:
     Double_slit(double dt, double h, arma::cx_vec a, arma::cx_vec b);
 
     // Translates two indices i,j to single indice k  (O)
-    int vec_ind(int i, int j);
+    int vec_ind(int i, int j, int M);
 
     // Generates vector containing diagonal elements of matrix A
     arma::cx_vec a_vec(const arma::cx_mat& V, arma::cx_double r, arma::cx_double dt);

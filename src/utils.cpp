@@ -17,12 +17,11 @@ Double_slit::Double_slit(double timestep, double spacestep, arma::cx_vec a, arma
     //B = CN_matB(r, b);
 }
 
-// // Translates two indices i,j to single indice k  (OPPGAVE 2)
-// int Double_slit::vec_ind(int i, int j)
-// {
-//     1;
-// }
-
+// Translates two indices i,j to a single index k
+int Double_slit::vec_ind(int i, int j, int M)
+{
+    return i + j*(M - 2);
+}
 
 // generates vector containing diagonal elements of matrix A
 arma::cx_vec Double_slit::a_vec(const arma::cx_mat& V, arma::cx_double r, arma::cx_double dt)
@@ -41,12 +40,6 @@ arma::cx_vec Double_slit::a_vec(const arma::cx_mat& V, arma::cx_double r, arma::
 
     return a;
 }
-
-// // generates vector containing diagonal elements of matrix B
-// arma::cx_vec Double_slit::b_vec(arma::cx_mat V, arma::cx_double r, arma::cx_double dt)
-// {
-//     1;
-// }
 
 // Helper function for CN_matA and CN_matB
 arma::cx_mat Double_slit::tridiag(arma::cx_double r, const arma::cx_vec& di)
