@@ -3,7 +3,8 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
-
+#include <complex>
+using namespace std::complex_literals;
 using namespace std;
 
 // Contructor
@@ -22,24 +23,29 @@ int Double_slit::vec_ind(int i, int j, int M)
     return i + j*(M - 2);
 }
 
+// generates vector containing diagonal elements of matrix A
+arma::cx_vec Double_slit::a_vec(const arma::cx_mat& V, arma::cx_double r, arma::cx_double dt)
+{
+    arma::cx_vec v = V.as_col();
+    arma::cx_vec a = 1.0 + 4.0 * r + 1i*dt*v/2.0;
 
-// // Generates vector containing diagonal elements of matrix A
-// arma::cx_vec Double_slit::a_vec(arma::cx_mat V, arma::cx_double r, arma::cx_double dt)
-// {
-//     1;
-// }
+    return a;
+}
 
-// // Generates vector containing diagonal elements of matrix B
-// arma::cx_vec Double_slit::b_vec(arma::cx_mat V, arma::cx_double r, arma::cx_double dt)
-// {
-//     1;
-// }
+// generates vector containing diagonal elements of matrix B
+arma::cx_vec Double_slit::a_vec(const arma::cx_mat& V, arma::cx_double r, arma::cx_double dt)
+{
+    arma::cx_vec v = V.as_col();
+    arma::cx_vec a = 1.0 - 4.0 * r - 1i*dt*v/2.0;
+
+    return a;
+}
 
 // Helper function for CN_matA and CN_matB
-arma::cx_mat Double_slit::tridiag(arma::cx_double r, arma::cx_vec di)
+arma::cx_mat Double_slit::tridiag(arma::cx_double r, const arma::cx_vec& di)
 {
     int N = di.n_elem;
-    arma::cx_mat Mi = arma::cx_mat(N, N, arma::fill::zeros);
+    arma::cx_mat Mi = arma::diagmat(di);
 
     // Filling the first row
     Mi(0,0) = di(0);
