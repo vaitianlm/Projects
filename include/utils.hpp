@@ -21,13 +21,13 @@ public:
     int vec_ind(int i, int j);
 
     // Generates vector containing diagonal elements of matrix A
-    arma::cx_vec a_vec(arma::cx_mat V, arma::cx_double r, arma::cx_double dt);
+    arma::cx_vec a_vec(const arma::cx_mat& V, arma::cx_double r, arma::cx_double dt);
 
     // generates vector containing diagonal elements of matrix B
-    arma::cx_vec b_vec(arma::cx_mat V, arma::cx_double r, arma::cx_double dt);
+    arma::cx_vec b_vec(const arma::cx_mat& V, arma::cx_double r, arma::cx_double dt);
 
     // Helper function for CN_matA and CN_matB
-    arma::cx_mat tridiag(arma::cx_double r, arma::cx_vec di);
+    arma::cx_mat tridiag(arma::cx_double r, const arma::cx_vec& di);
 
     // Constructs matrix A for CN scheme
     arma::cx_mat CN_matA(int M, arma::cx_double r, arma::cx_vec a);
