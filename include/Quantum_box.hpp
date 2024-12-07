@@ -10,17 +10,17 @@ public:
     double T;           // Total time of simulation
     double dt;          // Stepsize time
     double h;           // Stepsize space
-    arma::cx_double r;
+    arma::cx_double r;  // i*dt/2h^2
     int M;              // Points along the spacial axes
-    double v0;          // Magnitude of potential in the wall
     arma::sp_cx_mat V;  // Potential matrix
     arma::cx_vec u;     // Wave function
     arma::sp_cx_mat A;  // CN scheme matrix A
     arma::sp_cx_mat B;  // CN scheme matrix B
     arma::cx_cube S;    // 3D-matrix to store wavefunction at every timestep
+    arma::vec norm_dev; // Stores deviation of wavefunction norm from 1
 
     // Contructor
-    Quantum_box(double T_in, double dt_in, double h_in, double v0_in, double xc_in, 
+    Quantum_box(double T_in, double dt_in, double h_in, int slits, double xc_in, 
                 double yc_in, double px_in, double py_in, double sigmax_in, double sigmay_in);
 
     // Translates two indices i,j to single indice k  
@@ -38,7 +38,8 @@ public:
     arma::cx_vec u_init(double xc,double yc, double px, double py, double sigmax, double sigmay);
 
     // Creates potential matrix V containing potantial at every point x,y
-    void double_slit_init();
+    // slits=0 makes potential 0 everywhere
+    void slits_init(int slits);
 
     // Evolves wavefunction one timestep using Crank-Nicolson scheme
     void CN_step();
@@ -46,8 +47,12 @@ public:
     // Stores wavefuntion at every timestep
     void save_wf(int t_ind);
 
+    // Calculates and stores deviation of wavefuntion norm from 1
+    void deviation(int t_ind);
+
     // Does the simulation and saves the wavefunction at every iteration
     void run_simulation();
+
 };
 
 void print_sp_matrix_structure(const arma::sp_cx_mat& A);

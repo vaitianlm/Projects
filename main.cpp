@@ -9,26 +9,51 @@
 
 using namespace std;
 
-int main()
+int main(int argc, char* argv[])
 {
-    double h = 0.005;
-    double dt = 2.5e-5;
-    double T = dt;
-    // double T = 0.008;
-    double v0 = 0;
-    double xc = 0.25;
-    double sigmax = 0.05;
-    double px = 200;
-    double yc = 0.5;
-    double sigmay = 0.05;
-    double py = 0.0;
+    if (argc != 2)  // Expect 1 command-line argument
+    {
+        // Get the name of the executable file
+        string executable_name = argv[0];
 
-    Quantum_box double_slit = Quantum_box(T, dt, h, v0, xc, yc, px, py, sigmax, sigmay);
+        cerr << "Error: Wrong number of input arguments." << endl;
+        cerr << "Usage: " << executable_name << " <param_filename> " << std::endl;
+
+        // Exit program with non-zero return code to indicate a problem
+        return 1;   
+    }
+
+    // Reading parameters from file
+    string param_filename = argv[1];
+    arma::vec params;
+    bool ok = params.load(param_filename, arma::arma_ascii);
+
+    if (ok == false)
+    {
+        cerr << "Problem with loading file. Did you include folder/?" << endl;
+        return 1;
+    }
+
+    double h = params(0);
+    double dt = params(1);
+    double T = params(2);
+    double slits = params(3);
+    double xc = params(4);
+    double sigmax = params(5);
+    double px = params(6);
+    double yc = params(7);
+    double sigmay = params(8);
+    double py = params(9);
+
+    Quantum_box double_slit = Quantum_box(T, dt, h, int(slits), xc, yc, px, py, sigmax, sigmay);
     
     double_slit.run_simulation();
 
     string filename = "files/double_slit_test.bin";
     bool success = double_slit.S.save(filename);
+
+    string filename2 = "files/deviation.bin";
+    double_slit.norm_dev.save(filename2);
 
     if (success == true)
     {
@@ -37,6 +62,5 @@ int main()
     else
     {
         cout << "Could not write to file" << endl;
-    }
-    
+    }   
 }
