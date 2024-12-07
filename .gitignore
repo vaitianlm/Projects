@@ -1,5 +1,8 @@
-#txt files
+# txt files
 *.txt
+
+# Binary files
+*.bin
 
 #pdf
 *.pdf
