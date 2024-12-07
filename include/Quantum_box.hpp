@@ -55,6 +55,4 @@ public:
 
 };
 
-void print_sp_matrix_structure(const arma::sp_cx_mat& A);
-
 #endif  // end of include guard __Quantum_box_hpp__
