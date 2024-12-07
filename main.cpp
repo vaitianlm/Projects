@@ -11,13 +11,13 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    if (argc != 2)  // Expect 1 command-line argument
+    if (argc != 3)  // Expect 2 command-line argument
     {
         // Get the name of the executable file
         string executable_name = argv[0];
 
         cerr << "Error: Wrong number of input arguments." << endl;
-        cerr << "Usage: " << executable_name << " <param_filename> " << std::endl;
+        cerr << "Usage: " << executable_name << " <params/input_filename> <files/output_filename.bin>" << std::endl;
 
         // Exit program with non-zero return code to indicate a problem
         return 1;   
@@ -28,12 +28,14 @@ int main(int argc, char* argv[])
     arma::vec params;
     bool ok = params.load(param_filename, arma::arma_ascii);
 
+    // Checking for correct file loading
     if (ok == false)
     {
         cerr << "Problem with loading file. Did you include folder/?" << endl;
         return 1;
     }
 
+    // Defining parameters
     double h = params(0);
     double dt = params(1);
     double T = params(2);
@@ -45,22 +47,15 @@ int main(int argc, char* argv[])
     double sigmay = params(8);
     double py = params(9);
 
+    // Initialising instance of Quantum_box
     Quantum_box double_slit = Quantum_box(T, dt, h, int(slits), xc, yc, px, py, sigmax, sigmay);
     
+    // Running simulation
     double_slit.run_simulation();
 
-    string filename = "files/double_slit_test.bin";
-    bool success = double_slit.S.save(filename);
+    string filename = argv[2];
+    double_slit.S.save(filename);
 
     string filename2 = "files/deviation.bin";
     double_slit.norm_dev.save(filename2);
-
-    if (success == true)
-    {
-        cout << "Results written to file " << filename << endl;
-    }
-    else
-    {
-        cout << "Could not write to file" << endl;
-    }   
 }
