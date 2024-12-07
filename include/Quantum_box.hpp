@@ -1,26 +1,30 @@
 // Include guard
-#ifndef __double_slit_hpp__  
-#define __double_slit_hpp__
+#ifndef __Quantum_box_hpp__  
+#define __Quantum_box_hpp__
 
 #include <armadillo>
 
-class Double_slit
+class Quantum_box
 {
 public:
+    double T;           // Total time of simulation
     double dt;          // Stepsize time
     double h;           // Stepsize space
+    arma::cx_double r;
     int M;              // Points along the spacial axes
+    double v0;          // Magnitude of potential in the wall
     arma::sp_cx_mat V;  // Potential matrix
     arma::cx_vec u;     // Wave function
-    arma::cx_double r;  // i*dt/2h^2
-    arma::sp_cx_mat A;     // CN scheme matrix A
-    arma::sp_cx_mat B;     // CN scheme matrix B
+    arma::sp_cx_mat A;  // CN scheme matrix A
+    arma::sp_cx_mat B;  // CN scheme matrix B
+    arma::cx_cube S;    // 3D-matrix to store wavefunction at every timestep
 
     // Contructor
-    Double_slit(int points, double dt, double h, double xc, double yc, double px, double py, double sigmax, double sigmay);
+    Quantum_box(double T_in, double dt_in, double h_in, double v0_in, double xc_in, 
+                double yc_in, double px_in, double py_in, double sigmax_in, double sigmay_in);
 
     // Translates two indices i,j to single indice k  
-    int vec_ind(int i, int j, int M);
+    int vec_ind(int i, int j);
 
     // Generates vector containing diagonal elements of matrix A or B
     // Input 1 for A and -1 for B
@@ -30,16 +34,22 @@ public:
     // Input -r, ab_vec(1) for A and r, ab_vec(-1) for B
     arma::sp_cx_mat CN_matAB(arma::cx_double r, arma::cx_vec d);
 
-    // Evolves wavefunction one timestep using Crank-Nicolson scheme
-    void CN_step();
-
     // Creates the wavefunction u(x,y,t=0)
     arma::cx_vec u_init(double xc,double yc, double px, double py, double sigmax, double sigmay);
 
     // Creates potential matrix V containing potantial at every point x,y
     void double_slit_init();
+
+    // Evolves wavefunction one timestep using Crank-Nicolson scheme
+    void CN_step();
+
+    // Stores wavefuntion at every timestep
+    void save_wf(int t_ind);
+
+    // Does the simulation and saves the wavefunction at every iteration
+    void run_simulation();
 };
 
 void print_sp_matrix_structure(const arma::sp_cx_mat& A);
 
-#endif  // end of include guard __double_slit_hpp__
+#endif  // end of include guard __Quantum_box_hpp__

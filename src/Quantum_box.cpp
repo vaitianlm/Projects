@@ -1,5 +1,5 @@
 #include <cmath>
-#include "Double_slit.hpp"
+#include "Quantum_box.hpp"
 #include <iomanip>
 #include <iostream>
 #include <fstream>
@@ -8,30 +8,38 @@ using namespace std::complex_literals;
 using namespace std;
 
 // Contructor
-Double_slit::Double_slit(int points, double timestep, double spacestep, double x_c, double y_c, double p_x, double p_y, double sigma_x, double sigma_y)
+Quantum_box::Quantum_box(double T_in, double dt_in, double h_in, double v0_in, double xc_in, 
+                            double yc_in, double px_in, double py_in, double sigmax_in, double sigmay_in)
 {
-    dt = timestep;
-    h = spacestep;
-    M = round(1/h);
-    r = 1i*dt/(2*pow(h, 2));
-    A = CN_matAB(-r, ab_vec(1));
-    B = CN_matAB(r, ab_vec(-1));
+    T = T_in;
+    dt = dt_in;
+    h = h_in;
+    M = round(1/h)+1;
+    v0 = v0_in;
+    
+    u = u_init(xc_in, yc_in, px_in, py_in, sigmax_in, sigmay_in);
 
     V = arma::sp_cx_mat(M-2, M-2);
     double_slit_init();
+    
+    r = 1i*dt/(2*h*h);
+    A = CN_matAB(-r, ab_vec(1));
+    B = CN_matAB(r, ab_vec(-1));
 
-    u = u_init(x_c, y_c, p_x, p_y, sigma_x, sigma_y);
+    int t_steps = ceil(T/dt)+1;
+    S = arma::cx_cube(M-2, M-2, t_steps);
+    save_wf(0);
 }
 
 // Translates two indices i,j of (M-2 x M-2) matrix to a single index k
-int Double_slit::vec_ind(int i, int j, int M)
+int Quantum_box::vec_ind(int i, int j)
 {
     return i + j*(M - 2);
 }
 
 // Generates vector containing diagonal elements of matrix A.
 // Takes 1 as argument for A and -1 as argument for B.
-arma::cx_vec Double_slit::ab_vec(double pm)
+arma::cx_vec Quantum_box::ab_vec(double pm)
 {
     int N = V.n_elem;
 
@@ -49,7 +57,7 @@ arma::cx_vec Double_slit::ab_vec(double pm)
     {
         i = it.row();
         j = it.col();
-        k = vec_ind(i, j, N+2);
+        k = vec_ind(i, j);
         
         a(k) += pm * 1i*dt* (*it) /2.0;
     }
@@ -57,11 +65,9 @@ arma::cx_vec Double_slit::ab_vec(double pm)
     return a;
 }
 
-
-
 // Outputs matrix A or B for CN scheme.
 // Input -r, ab_vec(1) for A and r, ab_vec(-1) for B
-arma::sp_cx_mat Double_slit::CN_matAB(arma::cx_double r, arma::cx_vec d)
+arma::sp_cx_mat Quantum_box::CN_matAB(arma::cx_double r, arma::cx_vec d)
 {
     // Creating matrix A/B and filling the diagonal
     int N = d.n_elem;
@@ -87,14 +93,7 @@ arma::sp_cx_mat Double_slit::CN_matAB(arma::cx_double r, arma::cx_vec d)
     return Mat;
 }
 
-// Evolves wavefunction one timestep using Crank-Nicolson scheme
-void Double_slit::CN_step()
-{
-    arma::cx_vec b = B*u;
-    u = arma::spsolve(A, b);
-}
-
-arma::cx_vec Double_slit::u_init(double xc, double yc, double px, double py, double sigmax, double sigmay)
+arma::cx_vec Quantum_box::u_init(double xc, double yc, double px, double py, double sigmax, double sigmay)
 {
     int N_u = (M-2) * (M-2);
     arma::cx_vec u(N_u);
@@ -102,13 +101,13 @@ arma::cx_vec Double_slit::u_init(double xc, double yc, double px, double py, dou
     double x, y, dx, dy;
     for (int i = 0; i <= M-3; i++)
     {
-        x = i*h;
-        dx = x - xc;
+        y = i*h;
+        dy = y - yc;
         for (int j = 0; j <= M-3; j++)
         {
-            y = j*h;
-            dy = y - yc;
-            u(vec_ind(i, j, M)) = exp( -dx*dx/(2.0*sigmax*sigmax) -dy*dy/(2.0*sigmay*sigmay) + 1i * px * x + 1i * py * y);
+            x = j*h;
+            dx = x - xc;
+            u(vec_ind(i, j)) = exp( -dx*dx/(2.0*sigmax*sigmax) -dy*dy/(2.0*sigmay*sigmay) + 1i * px * x + 1i * py * y);
         }
     }
 
@@ -117,15 +116,12 @@ arma::cx_vec Double_slit::u_init(double xc, double yc, double px, double py, dou
 }
 
 // Creates potential matrix V containing potential at every point x,y
-void Double_slit::double_slit_init()
+void Quantum_box::double_slit_init()
 {
-    // Potential strength
-    double v0 = 1e10;
-
     // Barrier measurements
     double x_pos_barrier = 0.5;
     double barrier_half_width = 0.01;
-    double y_middle = 0.05;
+    double y_middle = 0.5;
     double midbar_half_width = 0.025;
     double aperture = 0.05;
     
@@ -140,38 +136,56 @@ void Double_slit::double_slit_init()
     int y_bot_end = ceil((y_middle+midbar_half_width+aperture)/h);
 
     // Filling V to make potential wall with slits
-    for (int j = 0; j <= y_top_end; j++)
+    for (int i = 0; i <= y_top_end; i++)
     {
-        for (int i = barrier_xf; i <= barrier_xl; i++)
+        for (int j = barrier_xf; j <= barrier_xl; j++)
         {
             V(i, j) = v0;
         }
     }
 
-    for (int j = y_midbar_top; j <= y_midbar_bot; j++)
+    for (int i = y_midbar_top; i <= y_midbar_bot; i++)
     {
-        for (int i = barrier_xf; i <= barrier_xl; i++)
+        for (int j = barrier_xf; j <= barrier_xl; j++)
         {
             V(i, j) = v0;
         }
     }
 
     int N = M - 2;
-    for (int j = y_bot_end; j <= N-1; j++)
+    for (int i = y_bot_end; i <= N-1; i++)
     {
-        for (int i = barrier_xf; i <= barrier_xl; i++)
+        for (int j = barrier_xf; j <= barrier_xl; j++)
         {
             V(i, j) = v0;
         }
     }
 }
 
+// Evolves wavefunction one timestep using Crank-Nicolson scheme
+void Quantum_box::CN_step()
+{
+    arma::cx_vec b = B*u;
+    u = arma::spsolve(A, b);
+}
 
+// Stores wavefuntion at every timestep
+void Quantum_box::save_wf(int t_ind)
+{
+    S.slice(t_ind) = arma::reshape(u, M-2, M-2); // Might need a transpose if results are weird
+}
 
+void Quantum_box::run_simulation()
+{
+    int t_steps = ceil(T/dt)+1;
+    for (int t_ind = 0; t_ind <= t_steps-1; t_ind++)
+    {
+        CN_step();
+        save_wf(t_ind);
+    }
+}
 
-
-
-// A function that prints the structure of a sparse matrix to screen.
+// A function that prints the structure of a sparse matrix to terminal.
 void print_sp_matrix_structure(const arma::sp_cx_mat& A)
 {
     using namespace std;
