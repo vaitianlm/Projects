@@ -276,7 +276,7 @@ void Quantum_box::run_simulation()
     int t_steps = ceil(T/dt)+1;
     for (int t_ind = 0; t_ind <= t_steps-1; t_ind++)
     {
-        int progress = round(t_steps/10);
+        int progress = round(t_steps/5);
         if (t_ind % progress == 0)
         {
             cout << "progress: " << t_ind << "/" << t_steps << endl;

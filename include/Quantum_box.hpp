@@ -52,7 +52,6 @@ public:
 
     // Does the simulation and saves the wavefunction at every iteration
     void run_simulation();
-
 };
 
 #endif  // end of include guard __Quantum_box_hpp__
