@@ -13,23 +13,6 @@ plt.grid()
 plt.plot(t, norm_dev)
 
 plt.xlabel("Time steps")
-plt.ylabel("Deviation from 1")
+plt.ylabel("Deviation from 1.0")
+plt.savefig("figures/deviation_noslit.pdf")
 plt.show()
-
-# print(pa.size(S)) #199x199x2
-
-# S_py = np.array(S)
-# S_py_magn = np.abs(S_py)
-
-# print(np.shape(S_py))
-
-
-# # Plotting
-# plt.figure(figsize=(8, 6))
-# im = plt.imshow(S_py_magn[0,:,:]**2, cmap='viridis', origin='lower', aspect='auto')
-# plt.colorbar(im, label='Magnitude')  # Change label based on what you plot
-# plt.title('First Slice of Quantum Box - Magnitude')
-# plt.xlabel('X-axis (Columns)')
-# plt.ylabel('Y-axis (Rows)')
-# plt.tight_layout()
-# plt.show()

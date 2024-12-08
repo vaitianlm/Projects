@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # Load data from simulation
 S_arma = pa.cx_cube()
-S_arma.load("files/no_slits.bin")
+S_arma.load("files/prob8_double.bin")
 
 # Converting from arma cube to numpy array
 S = np.array(S_arma)

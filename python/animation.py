@@ -7,7 +7,7 @@ from matplotlib.animation import FuncAnimation
 
 
 z_data_list = pa.cx_cube()
-z_data_list.load("files/double_slit_test.bin")
+z_data_list.load("files/prob8_double.bin")
 z_data_list = pa.abs(z_data_list)
 z_data_list = np.array(z_data_list)
 
