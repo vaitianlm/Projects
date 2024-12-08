@@ -4,10 +4,9 @@
 #include <armadillo>
 
 int main()
-{
-    // Choose filename
+{   // Choose filename
     std::string filename = "params/deviation.txt";
-    
+
     // Simulation Parameters
 
     double h = 0.005;           // Stepsize x and y (space)
