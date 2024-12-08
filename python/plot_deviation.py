@@ -2,6 +2,9 @@ import pyarma as pa
 import numpy as np
 import matplotlib.pyplot as plt
 
+# S = pa.cx_cube()
+# S.load("files/double_slit_test.bin")
+
 norm_dev = pa.mat()
 norm_dev.load("files/deviation_0slit.bin")
 

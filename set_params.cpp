@@ -5,7 +5,11 @@
 
 int main()
 {
+    // Choose filename
+    std::string filename = "params/deviation.txt";
+    
     // Simulation Parameters
+
     double h = 0.005;           // Stepsize x and y (space)
     double dt = 2.5e-5;         // Stepsize t (time)
     double T = 0.008;           // Total time of simulation
@@ -21,6 +25,5 @@ int main()
     arma::vec params({h, dt, T, slits, xc, sigmax, px, yc, sigmay, py});
 
     // Writing to file
-    std::string filename = "params/deviation.txt";
     params.save(filename, arma::arma_ascii);
 }
