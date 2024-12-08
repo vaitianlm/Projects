@@ -6,14 +6,20 @@ import matplotlib.pyplot as plt
 # S.load("files/double_slit_test.bin")
 
 norm_dev = pa.mat()
-norm_dev.load("files/deviation.bin")
+norm_dev.load("files/deviation_0slit.bin")
 
 t = np.arange(0, np.size(norm_dev))
 
+plt.rcParams.update({"font.size": 16})
+plt.subplots_adjust( bottom = 0.138)
+plt.grid()
 plt.plot(t, norm_dev)
+
+plt.xlabel("Time steps")
+plt.ylabel("Deviation from 1")
 plt.show()
 
-print(pa.size(S)) #199x199x2
+# print(pa.size(S)) #199x199x2
 
 # S_py = np.array(S)
 # S_py_magn = np.abs(S_py)

@@ -1,7 +1,12 @@
 // Build with:
 // g++ main.cpp src/Quantum_box.cpp -I include -larmadillo -o main.exe
+
 // Execute with:
 // ./main.exe <params/input_filename> <files/output_filename.bin>
+
+// Execute with
+// ./main.exe params/<input_filename> files/<output_filename.bin> <track deviation [true/false]>
+
 
 #include <cmath>
 #include "Quantum_box.hpp"
@@ -13,13 +18,13 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-    if (argc != 3)  // Expect 2 command-line argument
+    if (argc != 4)  // Expect 3 command-line arguments
     {
         // Get the name of the executable file
         string executable_name = argv[0];
 
         cerr << "Error: Wrong number of input arguments." << endl;
-        cerr << "Usage: " << executable_name << " <params/input_filename> <files/output_filename.bin>" << std::endl;
+        cerr << "Usage: " << executable_name << " params/<input_filename> files/<output_filename.bin> <track deviation [true/false]> "  << std::endl;
 
         // Exit program with non-zero return code to indicate a problem
         return 1;   
@@ -55,9 +60,20 @@ int main(int argc, char* argv[])
     // Running simulation
     double_slit.run_simulation();
 
+    // Writing to file
     string filename = argv[2];
     double_slit.S.save(filename);
 
-    string filename2 = "files/deviation.bin";
-    double_slit.norm_dev.save(filename2);
+    // Writing deviation to file if wanted
+    string write_deviation = argv[3];
+    if (write_deviation != "false")
+    {
+        string filename2 = "files/deviation.bin";
+        double_slit.norm_dev.save(filename2);
+
+        if (write_deviation != "true")
+        {
+            cout << "Third command line argument was neither true nor false. The deviation file was written anyways." << endl;
+        }
+    }
 }
