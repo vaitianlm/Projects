@@ -2,8 +2,7 @@
 // g++ main.cpp src/Quantum_box.cpp -I include -larmadillo -o main.exe
 
 // Execute with
-// ./main.exe params/<input_filename> files/<output_filename.bin> <track deviation [true/false]>
-
+// ./main.exe params/<input_filename.txt> files/<output_filename.bin> <track deviation [true/false]>
 
 #include <cmath>
 #include "Quantum_box.hpp"

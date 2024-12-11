@@ -147,7 +147,7 @@ void Quantum_box::slits_init(int slits)
     else if (slits == 1)
     {
         // y-indices of barrier ends
-        int y_top_end = floor((y_middle - aperture/2)/h);
+        int y_top_end = ceil((y_middle - aperture/2)/h);
         int y_bot_end = ceil((y_middle + aperture/2)/h);
 
         // Filling V to make potential wall with slits
@@ -171,8 +171,8 @@ void Quantum_box::slits_init(int slits)
     else if(slits == 2)
     {
         // y-indices of barrier ends
-        int y_top_end = floor((y_middle-midbar_half_width-aperture)/h);
-        int y_midbar_top = floor((y_middle-midbar_half_width)/h);
+        int y_top_end = ceil((y_middle-midbar_half_width-aperture)/h)-1;
+        int y_midbar_top = ceil((y_middle-midbar_half_width)/h);
         int y_midbar_bot = ceil((y_middle+midbar_half_width)/h);
         int y_bot_end = ceil((y_middle+midbar_half_width+aperture)/h);
 
@@ -205,11 +205,11 @@ void Quantum_box::slits_init(int slits)
     else if (slits == 3)
     {
         // y-indices of barrier ends
-        int y_top_end = floor((y_middle - 2*midbar_half_width - aperture*1.5)/h);
-        int y_midbar1_top = floor((y_middle - 2*midbar_half_width - aperture/2)/h);
-        int y_midbar1_bot = floor((y_middle - midbar_half_width)/h);
+        int y_top_end = ceil((y_middle - 2*midbar_half_width - aperture*1.5)/h);
+        int y_midbar1_top = ceil((y_middle - 2*midbar_half_width - aperture/2)/h);
+        int y_midbar1_bot = ceil((y_middle - midbar_half_width)/h);
         int y_midbar2_top = ceil((y_middle + midbar_half_width)/h);
-        int y_midbar2_bot = ceil((y_middle + 2*midbar_half_width + aperture/2)/h);
+        int y_midbar2_bot = ceil((y_middle + 2*midbar_half_width + aperture/2)/h)-1;
         int y_bot_end = ceil((y_middle + 2*midbar_half_width + aperture*1.5)/h);
 
         // Filling V to make potential wall with slits
@@ -267,8 +267,9 @@ void Quantum_box::save_wf(int t_ind)
 
 void Quantum_box::deviation(int t_ind)
 {
-    float d = 1 - arma::norm(u);
-    norm_dev(t_ind) = d;
+    double norm = arma::norm(u);
+    double d = 1.0 - norm*norm;
+    norm_dev(t_ind) = abs(d);
 }
 
 void Quantum_box::run_simulation()
