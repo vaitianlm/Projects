@@ -3,6 +3,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pyarma as pa
 from matplotlib.animation import FuncAnimation
+from matplotlib.animation import PillowWriter
 
 z_data_list = pa.cx_cube()
 z_data_list.load("../files/colourmap_2_slits.bin")
@@ -66,6 +67,9 @@ def animation(i):
 # Use matplotlib.animation.FuncAnimation to put it all together
 anim = FuncAnimation(fig, animation, interval=1, frames=np.arange(0, len(z_data_list), 2), repeat=False, blit=0)
 
+writer = PillowWriter(fps=15)  # Adjust FPS as needed
+anim.save('../animation/animation.gif', writer=writer)
+
 # Run the animation!
 #plt.show()
 
@@ -73,4 +77,4 @@ anim = FuncAnimation(fig, animation, interval=1, frames=np.arange(0, len(z_data_
 # writer = FFMpegWriter(fps=15, bitrate=10000)
 # anim.save('animation.mp4', writer=writer)
 
-anim.save('../animation/animation.mp4', writer="ffmpeg", bitrate=10000, fps=15)  # The fps (frames per second) sets the animation speed
+# anim.save('../animation/animation.mp4', writer="ffmpeg", bitrate=10000, fps=15)  # The fps (frames per second) sets the animation speed
