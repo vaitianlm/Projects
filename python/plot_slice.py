@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gs
 plt.rcParams.update({"font.size": 15})
 
-# Load data from simulation
+# Loading data from simulation
 u_arma = pa.cx_cube()
 u_arma.load("../files/colourmap_2_slits.bin")
 
@@ -16,7 +16,6 @@ u = np.array(u_arma)
 u_magn = np.abs(u) # Magnitude
 u_Re = np.real(u)  # Real part
 u_Im = np.imag(u)  # Imaginary part
-
 
 # Prints dimensions (Note how it's inverted)
 print(np.shape(u)) #(81, 199, 199)
@@ -39,28 +38,27 @@ times = [0.0, 0.001, 0.002]
 indices = [t0, t001, t002]
 
 for i, (idx, t_val) in enumerate(zip(indices, times)):
-    # Compute norm for this slice
-    norm = plt.cm.colors.Normalize(vmin=0.0, vmax=np.max(u_Re[idx,:,:])) # Choose u_magn, u_Re or u_Im
+    # Computing norm
+    norm = plt.cm.colors.Normalize(vmin=np.min(u_magn[idx,:,:]), vmax=np.max(u_magn[idx,:,:])) # Choose u_magn, u_Re or u_Im
     
-    # Add the main axes for the image
+    # Adding the main axes
     ax = fig.add_subplot(gs[i, 0])
-    im = ax.imshow(u_Re[idx,:,:], extent=[x_min, x_max, y_min, y_max],   # Choose u_magn, u_Re or u_Im
+    im = ax.imshow(u_magn[idx,:,:], extent=[x_min, x_max, y_min, y_max],   # Choose u_magn, u_Re or u_Im
                    cmap="viridis", origin="lower", aspect="auto", norm=norm)
     
-    # Set labels and time text
+    # Setting labels and time text
     ax.set_xlabel("$x$")
     ax.set_ylabel("$y$")
     ax.text(0.95, 0.95, f"t = {t_val:.3e}", color="white",
             ha="right", va="top", transform=ax.transAxes)
 
-    # Add the colorbar in the corresponding axes defined by GridSpec
+    # Adding the colorbar in the corresponding axes defined by GridSpec
     cax = fig.add_subplot(gs[i, 1])
     cbar = fig.colorbar(im, cax=cax)
 
     # cbar.set_label("$|u(x,y,t)|$")
     # cbar.set_label("Re$(u(x,y,t))$")
     # cbar.set_label("Im$(u(x,y,t))$")
-
 
 # plt.savefig("../figures/colourmaps_magn.pdf")
 # plt.savefig("../figures/colourmaps_Re.pdf")

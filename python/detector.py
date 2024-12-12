@@ -30,7 +30,7 @@ for file, label in zip(files, labels):
     P = np.abs(S)**2
 
     # P(y|x=0.8; t=0.002)
-    P_screen = P[t_ind, :, x_ind]/np.linalg.norm(P[t_ind, :, x_ind])
+    P_screen = P[t_ind, :, x_ind]/np.sum(P[t_ind, :, x_ind])
 
     # Creating y array
     y = np.linspace(0, 1, np.size(P_screen))
@@ -43,5 +43,5 @@ plt.grid()
 plt.xlabel("$y$")
 plt.ylabel("$p(y|x=0.8; t=0.002)$")
 plt.legend()
-plt.savefig("../figures/detector.pdf")
+# plt.savefig("../figures/detector.pdf")
 plt.show()
