@@ -1,10 +1,4 @@
-#include <cmath>
 #include "Quantum_box.hpp"
-#include <iomanip>
-#include <iostream>
-#include <fstream>
-#include <complex>
-using namespace std::complex_literals;
 using namespace std;
 
 // Contructor

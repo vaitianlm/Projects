@@ -4,12 +4,7 @@
 // Execute with
 // ./main.exe params/<input_filename.txt> files/<output_filename.bin> <track deviation [true/false]>
 
-#include <cmath>
 #include "Quantum_box.hpp"
-#include <iomanip>
-#include <iostream>
-#include <fstream>
-
 using namespace std;
 
 int main(int argc, char* argv[])
@@ -34,7 +29,7 @@ int main(int argc, char* argv[])
     // Checking for correct file loading
     if (ok == false)
     {
-        cerr << "Problem with loading file. Did you include folder/?" << endl;
+        cerr << "Problem with loading file. Did you include filepath?" << endl;
         return 1;
     }
 
@@ -58,15 +53,26 @@ int main(int argc, char* argv[])
 
     // Writing to file
     string filename = argv[2];
-    double_slit.S.save(filename);
+    ok = double_slit.S.save(filename);
+
+    if (ok == false)
+    {
+        cerr << "Problem with saving file. Does the specified folder for the output exist?" << endl;
+        return 1;
+    }
 
     // Writing deviation to file if wanted
     string write_deviation = argv[3];
     if (write_deviation != "false")
     {
         string filename2 = "files/deviation.bin";
-        double_slit.norm_dev.save(filename2);
+        ok = double_slit.norm_dev.save(filename2);
 
+        if (ok == false)
+        {
+            string filename2 = "deviation.bin";
+            double_slit.norm_dev.save(filename2);
+        }
         if (write_deviation != "true")
         {
             cout << "Third command line argument was neither true nor false. The deviation file was written anyways." << endl;

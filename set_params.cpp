@@ -8,7 +8,6 @@ int main()
     std::string filename = "params/detector_2_slits.txt";
 
     // Simulation Parameters
-
     double h = 0.005;           // Stepsize x and y (space)
     double dt = 2.5e-5;         // Stepsize t (time)
     double T = 0.002;           // Total time of simulation

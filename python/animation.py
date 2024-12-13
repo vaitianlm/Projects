@@ -6,7 +6,7 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.animation import PillowWriter
 
 z_data_list = pa.cx_cube()
-z_data_list.load("../files/colourmap_2_slits.bin")
+z_data_list.load("../files/double_slit.bin")
 z_data_list = pa.abs(z_data_list)
 z_data_list = np.array(z_data_list)
 
@@ -16,11 +16,6 @@ t_min = 0
 dt = 2.5e-5
 x_min, x_max = 0, 1
 y_min, y_max = 0, 1
-
-
-# Now the list z_data_list contains a series of "frames" of z(x,y,t), 
-# where each frame can be plotted as a 2D image using imshow. Let's
-# animate it!
 
 
 # Create figure
@@ -68,10 +63,10 @@ def animation(i):
 anim = FuncAnimation(fig, animation, interval=1, frames=np.arange(0, len(z_data_list), 2), repeat=False, blit=0)
 
 writer = PillowWriter(fps=15)  # Adjust FPS as needed
-anim.save('../animation/animation.gif', writer=writer)
+# anim.save('../animation/animation.gif', writer=writer)
 
 # Run the animation!
-#plt.show()
+plt.show()
 
 # Save the animation
 # writer = FFMpegWriter(fps=15, bitrate=10000)
