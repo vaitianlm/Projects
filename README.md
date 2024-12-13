@@ -24,7 +24,7 @@ Run command:
 ./main.exe params/<input_filename.txt> files/<output_filename.bin> <track deviation [true/false]>
 ```
 
-Make sure that there is a folder names "files", or don't include it in the input filepath for the parameter file. The output file will be a binary file, make sure to input the .bin suffix. The output file will contain an Armadillo cx_mat containing the wavefuntion $u_{ij}^n$ at all timesteps. If the third command line argument is "true", then a file named "deviation.bin" will be created, containing a cx_vector filled with the deviation of the probability function from 1, i.e. $|1-u^2|$.
+Make sure that there is a folder named "files", or don't include it in the input filepath for the parameter file. The output file will be a binary file, make sure to input the .bin suffix. The output file will contain an Armadillo cx_mat containing the wavefuntion $u_{ij}^n$ at all timesteps. If the third command line argument is "true", then a file named "deviation.bin" will be created, containing a cx_vector filled with the deviation of the probability function from 1, i.e. $|1-u^2|$.
 
 ## animation.py
 Animates the simulated wavefunction. Needs one cx_cube binary file.
@@ -36,4 +36,4 @@ Creates plot of three probability functions. Needs three cx_cube binary files.
 Creates plot of the deviation file.
 
 ## plot_slice.py
-Plots wavefunction at three different timesteps. Needs one cx_cube binary file.
+Plots wavefunction at three different timesteps. Choose wether to plot magnitude, real part or imaginary part. Needs one cx_cube binary file.
