@@ -1,0 +1,25 @@
+# txt files
+*.txt
+
+# Binary files
+*.bin
+
+#pdf
+*.pdf
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+*.app
+
+# vscode
+.vscode
