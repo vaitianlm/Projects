@@ -1,4 +1,5 @@
 # Quantum Diffraction
+Simulation of quantum mechanicle wave packet sent through double/triple slits, showing diffraction patterns.
 
 ## set_params.cpp
 Creates parameter file. Edit the file to set a filename and choose parameters.
