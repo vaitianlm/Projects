@@ -1,4 +1,5 @@
 # Quantum Diffraction
+Simulation of quantum mechanical wave packet sent through double/triple slits, showing diffraction patterns. An animation can be seen in either gif or mp4 format in the animation folder.
 
 ## set_params.cpp
 Creates parameter file. Edit the file to set a filename and choose parameters.
